@@ -9,7 +9,15 @@ const port = process.env.PORT || 5000;
 
 
 // middleware
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        // 'https://concept-1-bbffd.web.app',
+        // 'https://concept-1-bbffd.firebaseapp.com'
+  
+    ],
+    credentials: true
+  }))
 app.use(express.json())
 
 
@@ -32,7 +40,19 @@ async function run() {
 
     const userCollection = client.db("taskManagement").collection("users");
 
+    // user related api
+    app.post("/users", async(req, res) => {
+        const user = req.body;
 
+        const query = { email: user.email}
+        const existingUser = await userCollection.findOne(query)
+        if(existingUser) {
+            return res.send({message: "User already exist", insertedId: null})
+        }
+        const result = await userCollection.insertOne(user)
+        res.send(result);
+
+    })
 
 
 
