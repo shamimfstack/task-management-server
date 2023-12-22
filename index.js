@@ -39,6 +39,7 @@ async function run() {
     // await client.connect();
 
     const userCollection = client.db("taskManagement").collection("users");
+    const taskCollection = client.db("taskManagement").collection("tasks");
 
     // user related api
     app.post("/users", async(req, res) => {
@@ -52,6 +53,14 @@ async function run() {
         const result = await userCollection.insertOne(user)
         res.send(result);
 
+    })
+
+
+    // tasks related api
+    app.post("/tasks", async(req, res) => {
+      const newTasks = req.body;
+      const result = await taskCollection.insertOne(newTasks);
+      res.send(result);
     })
 
 
