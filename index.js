@@ -42,6 +42,11 @@ async function run() {
     const taskCollection = client.db("taskManagement").collection("tasks");
 
     // user related api
+    app.get("/users", async(req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    })
+
     app.post("/users", async(req, res) => {
         const user = req.body;
 
@@ -57,6 +62,14 @@ async function run() {
 
 
     // tasks related api
+    app.get("/tasks", async(req, res) => {
+      const email = req.query.email;
+      let query = "";
+      query = { email: email}
+      const result = await taskCollection.find(query).toArray();
+      res.send(result);
+    })
+
     app.post("/tasks", async(req, res) => {
       const newTasks = req.body;
       const result = await taskCollection.insertOne(newTasks);
