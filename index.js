@@ -70,8 +70,9 @@ async function run() {
       res.send(result);
     })
 
-    app.get("tasks/:id", async(req, res) => {
+    app.get("/tasks/:id", async(req, res) => {
       const id = req.params.id;
+      // console.log(id);
       const query = {_id: new ObjectId(id)}
       const result = await taskCollection.findOne(query);
       res.send(result);
@@ -80,6 +81,23 @@ async function run() {
     app.post("/tasks", async(req, res) => {
       const newTasks = req.body;
       const result = await taskCollection.insertOne(newTasks);
+      res.send(result);
+    })
+
+    app.put("/tasks/:id", async(req, res) => {
+      const id = req.params.id;
+      // console.log(updatedTask);
+      const filter = {_id: new ObjectId(id)}
+      const options = {upsert: true}
+      const updatedTask = req.body;
+      const task = {
+        $set: {
+          title: updatedTask.title,
+          description: updatedTask.description,
+          dueDate: updatedTask.dueDate
+        }
+      };
+      const result = await taskCollection.updateOne(filter, task, options)
       res.send(result);
     })
 
