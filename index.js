@@ -11,9 +11,9 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(cors({
     origin: [
-        'http://localhost:5173',
-        // 'https://task-management-shamimfstack.web.app/',
-        // 'https://task-management-shamimfstack.firebaseapp.com/'
+        // 'http://localhost:5173',
+        'https://task-management-shamimfstack.web.app',
+        'https://task-management-shamimfstack.firebaseapp.com'
   
     ],
     credentials: true
@@ -62,20 +62,20 @@ async function run() {
 
 
     // tasks related api
-    // app.get("/tasks", async(req, res) => {
-    //   const email = req.query.email;
-    //   // let query = "";
-    //   const query = { email: email}
-    //   const result = await taskCollection.find(query).toArray();
-    //   res.send(result);
-    // })
     app.get("/tasks", async(req, res) => {
-      // const email = req.query.email;
+      const email = req.query.email;
       // let query = "";
-      // const query = { email: email}
-      const result = await taskCollection.find().toArray();
+      const query = { email: email}
+      const result = await taskCollection.find(query).toArray();
       res.send(result);
     })
+    // app.get("/tasks", async(req, res) => {
+    //   // const email = req.query.email;
+    //   // let query = "";
+    //   // const query = { email: email}
+    //   const result = await taskCollection.find().toArray();
+    //   res.send(result);
+    // })
 
     app.get("/tasks/:id", async(req, res) => {
       const id = req.params.id;
